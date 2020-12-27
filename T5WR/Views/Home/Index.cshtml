@@ -1,0 +1,73 @@
+﻿@model IEnumerable<T5WR.Models.GameM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Tic-Tac-Toe</title>
+    <link rel="stylesheet" href="~/css/tagify.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/tagify.min.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/search.js"></script>
+</head>
+<body>
+    <div class="column">
+        <p>
+            <a asp-controller="GameMs" asp-action="Create">Create New</a>
+        </p>
+        <input type="text" id="text-to-find" onkeyup="Search()" value="" placeholder="Search" class="m-3" >
+        <table class="table" id="gameTable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.GameName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Tags)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GameName)
+                        </td>
+                        <td>
+                            <input value='@Html.DisplayFor(modelItem => item.Tags)' id="@item.Id" readonly />
+                            <script>
+                                var input = document.querySelector('input[id="@item.Id"]'),
+                                    tagify = new Tagify(input, {
+                                    })
+                            </script>
+                        </td>
+                        <td>
+                            <a asp-controller="GameMs" asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                            <button value="@item.GameName" onclick="joinToRoom('@item.GameName')">Join</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="gameContainer" id="gameCont" hidden="true">
+        <h1>Tic-Tac-Toe</h1>
+        <div class="play-area">
+
+        </div>
+        <h2 id="winner"></h2>
+        <button onclick="reset_board()">RESET</button>
+    </div>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/app.js"></script>
+</body>
+</html>

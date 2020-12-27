@@ -1,0 +1,62 @@
+﻿@model T5WR.Models.GameM
+
+@{
+    ViewData["Title"] = "Create";
+}
+<head>
+    <link rel="stylesheet" href="~/css/tagify.css" />
+    <script src="~/js/tagify.min.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/game.js"></script>
+</head>
+<h1>Create</h1>
+
+<h4>GameM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GameName" class="control-label"></label>
+                <input asp-for="GameName" class="form-control" id="gameName" />
+                <span asp-validation-for="GameName" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="form-control" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <input asp-for="Tags" class="tags" placeholder='write tags' value='' id="input-custom-dropdown" />
+                <span asp-validation-for="Tags" class="text-danger"></span>
+                <script>
+                    var input = document.querySelector('input[id="input-custom-dropdown"]'),
+                        tagify = new Tagify(input, {
+                            whitelist: [],
+                            maxTags: 10,
+                            dropdown: {
+                                maxItems: 20,
+                                classname: "tags-look",
+                                enabled: 0,
+                                closeOnSelect: false
+                            }
+                        })
+                </script>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" id="CreateGame" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
